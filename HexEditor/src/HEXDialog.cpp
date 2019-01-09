@@ -3862,6 +3862,19 @@ void HexEdit::ToggleBookmark(void)
 	ToggleBookmark(_pCurProp->cursorItem);
 }
 
+//ADDITION BY KONRADSMOLKO
+void HexEdit::DeleteBookmark(UINT index)
+{
+	//_pCurProp->vBookmarks.erase(&_pCurProp->vBookmarks[index]);
+	/* C2664
+	 * 'std::_Vector_iterator<std::_Vector_val<std::_Simple_types<tBkMk>>>
+	 * std::vector<tBkMk,std::allocator<_Ty>>::erase(std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<tBkMk>>>,
+	 * std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<tBkMk>>>)'
+	 * : cannot convert argument 1 from 'tBkMk *' to 'std::_Vector_const_iterator<std::_Vector_val<std::_Simple_types<tBkMk>>>'
+	 */
+	_pCurProp->vBookmarks.erase(_pCurProp->vBookmarks.begin() + index);
+}
+
 void HexEdit::ToggleBookmark(UINT iItem)
 {
 	UINT	isChanged = FALSE;
@@ -3870,12 +3883,7 @@ void HexEdit::ToggleBookmark(UINT iItem)
 	{
 		if (_pCurProp->vBookmarks[i].iItem == iItem) {
 			/* if bookmark exists delete it from list */
-			//_pCurProp->vBookmarks.erase(&_pCurProp->vBookmarks[i]); // C2664: erase expects iterator, not a pointer to bookmark
-			// USING ERASE-REMOVE IDIOM
-			// vec.erase(std::remove(vec.begin(), vec.end(), 8), vec.end());
-			_pCurProp->vBookmarks.erase(
-				std::remove(_pCurProp->vBookmarks.begin(), _pCurProp->vBookmarks.end(), _pCurProp->vBookmarks.at(i)),
-				_pCurProp->vBookmarks.end()); // a
+			DeleteBookmark(i);
 			isChanged = TRUE;
 		}
 		else if (_pCurProp->vBookmarks[i].iItem > iItem) {
@@ -3920,12 +3928,7 @@ void HexEdit::UpdateBookmarks(UINT firstAdd, INT length)
 
 			if ((_pCurProp->vBookmarks[i].lAddress == firstAdd) && (length < 0)) {
 				/* remove bookmark if is in a delete section */
-				//_pCurProp->vBookmarks.erase(&_pCurProp->vBookmarks[i]); // C2664: erase expects iterator, not a pointer to bookmark
-				// USING ERASE-REMOVE IDIOM
-				// vec.erase(std::remove(vec.begin(), vec.end(), 8), vec.end());
-				_pCurProp->vBookmarks.erase(
-					std::remove(_pCurProp->vBookmarks.begin(), _pCurProp->vBookmarks.end(), _pCurProp->vBookmarks.at(i)),
-					_pCurProp->vBookmarks.end());
+				DeleteBookmark(i);
 				i--;
 			} else if ((UINT)_pCurProp->vBookmarks[i].lAddress > firstAdd) {
 				/* calculate new addresses of bookmarks behind the first address */
@@ -3937,12 +3940,7 @@ void HexEdit::UpdateBookmarks(UINT firstAdd, INT length)
 
 				/* if some data was deleted and the changed item matches with the privious one delete it */
 				if ((i != 0) && (_pCurProp->vBookmarks[i].lAddress == _pCurProp->vBookmarks[i-1].lAddress)) {
-					//_pCurProp->vBookmarks.erase(&_pCurProp->vBookmarks[i]); // C2664: erase expects iterator, not a pointer to bookmark
-					// USING ERASE-REMOVE IDIOM
-					// vec.erase(std::remove(vec.begin(), vec.end(), 8), vec.end());
-					_pCurProp->vBookmarks.erase(
-						std::remove(_pCurProp->vBookmarks.begin(), _pCurProp->vBookmarks.end(), _pCurProp->vBookmarks.at(i)),
-						_pCurProp->vBookmarks.end());
+					DeleteBookmark(i);
 					i--;
 				}
 

@@ -24,7 +24,7 @@ Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 
 typedef HRESULT (WINAPI * ETDTProc) (HWND, DWORD);
-#define CB_SETMINVISIBLE 0x1701
+//#define CB_SETMINVISIBLE 0x1701 // already defined in Windows 8 kit
 
 
 
@@ -773,7 +773,7 @@ void FindReplaceDlg::getSelText(tComboInfo* info)
 	::SendMessage(_hParentHandle, HEXM_GETSEL, (WPARAM)&posBeg, (LPARAM)&posEnd);
 
 	INT	offset	= (INT)(posBeg < posEnd ? posBeg : posEnd);
-	INT	length	= (abs(posEnd-posBeg) > COMBO_STR_MAX ? COMBO_STR_MAX : abs(posEnd-posBeg));
+	INT	length	= (abs((INT)(posEnd-posBeg)) > COMBO_STR_MAX ? COMBO_STR_MAX : abs((INT)(posEnd-posBeg)));
 	info->length = length;
 
 	if (info->length != 0)

@@ -378,6 +378,9 @@ private:
 	void SetSelection(UINT posBegin, UINT posEnd, eSel selection = HEX_SEL_NORM, BOOL isEND = FALSE);
 	void GetSelection(LPINT posBegin, LPINT posEnd);
 
+	//ADDITION BY KONRADSMOLKO
+	void DeleteBookmark(UINT index);
+
 	void ToggleBookmark(UINT item);
 	void UpdateBookmarks(UINT firstElem, INT length);
 
