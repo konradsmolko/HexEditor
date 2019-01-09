@@ -50,8 +50,8 @@ BOOL CALLBACK GotoDlg::run_dlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARA
 			_hLineEdit = ::GetDlgItem(_hSelf, IDC_EDIT_GOTO);
 
 			/* intial subclassing */
-			::SetWindowLongPtr(_hLineEdit, GWL_USERDATA, reinterpret_cast<LONG>(this));
-			_hDefaultEditProc = reinterpret_cast<WNDPROC>(::SetWindowLongPtr(_hLineEdit, GWL_WNDPROC, reinterpret_cast<LONG>(wndEditProc)));
+			::SetWindowLongPtr(_hLineEdit, GWLP_USERDATA, reinterpret_cast<LONG>(this));
+			_hDefaultEditProc = reinterpret_cast<WNDPROC>(::SetWindowLongPtr(_hLineEdit, GWLP_WNDPROC, reinterpret_cast<LONG>(wndEditProc)));
 
 			::SendDlgItemMessage(_hSelf, IDC_CHECK_LINE, BM_SETCHECK, (_isHex == TRUE)?BST_UNCHECKED:BST_CHECKED, 0);
 			::SendDlgItemMessage(_hSelf, IDC_RADIO_ADDRESS, BM_SETCHECK, BST_CHECKED, 0);

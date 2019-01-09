@@ -82,8 +82,8 @@ BOOL CALLBACK HexEdit::run_dlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARA
 			UpdateFont();
 
 			/* intial subclassing for key mapping */
-			::SetWindowLongPtr(_hListCtrl, GWL_USERDATA, (LONG)(void *)this);
-			_hDefaultListProc = (WNDPROC)(void *)(::SetWindowLongPtr(_hListCtrl, GWL_WNDPROC, (LONG)(void *)wndListProc));
+			::SetWindowLongPtr(_hListCtrl, GWLP_USERDATA, (LONG)(void *)this);
+			_hDefaultListProc = (WNDPROC)(void *)(::SetWindowLongPtr(_hListCtrl, GWLP_WNDPROC, (LONG)(void *)wndListProc));
 			ListView_SetExtendedListViewStyleEx(_hListCtrl, LVS_EX_ONECLICKACTIVATE, LVS_EX_ONECLICKACTIVATE);
 			break;
 		}
@@ -196,7 +196,7 @@ BOOL CALLBACK HexEdit::run_dlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARA
 									}
 								}
 
-								SetWindowLongPtrW(hwnd, DWL_MSGRESULT, (LONG)(CDRF_NOTIFYITEMDRAW|CDRF_NOTIFYPOSTPAINT));
+								SetWindowLongPtrW(hwnd, DWLP_MSGRESULT, (LONG)(CDRF_NOTIFYITEMDRAW|CDRF_NOTIFYPOSTPAINT));
 								return TRUE;
 
 							case CDDS_ITEMPREPAINT:
@@ -271,7 +271,7 @@ BOOL CALLBACK HexEdit::run_dlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARA
                                 /* destroy background brush */
 							    ::DeleteObject(_hBkBrush);
 
-								SetWindowLongPtr(hwnd, DWL_MSGRESULT, (LONG)(CDRF_SKIPDEFAULT));
+								SetWindowLongPtr(hwnd, DWLP_MSGRESULT, (LONG)(CDRF_SKIPDEFAULT));
 								return TRUE;
 
 							case CDDS_POSTPAINT:
@@ -289,7 +289,7 @@ BOOL CALLBACK HexEdit::run_dlgProc(HWND hwnd, UINT Message, WPARAM wParam, LPARA
 								_uFirstVisSubItem = 0;
 								_uLastVisSubItem = 0;
 
-								SetWindowLongPtr(hwnd, DWL_MSGRESULT, (LONG)(CDRF_SKIPDEFAULT));
+								SetWindowLongPtr(hwnd, DWLP_MSGRESULT, (LONG)(CDRF_SKIPDEFAULT));
 								return TRUE;
 							}
 							default:
